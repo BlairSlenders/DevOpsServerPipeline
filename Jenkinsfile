@@ -49,4 +49,3 @@ pipeline {
             echo 'Build, tests, or deployment failed.'
         }
     }
-}
