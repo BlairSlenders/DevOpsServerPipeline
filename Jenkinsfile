@@ -19,9 +19,8 @@ pipeline {
                 sh 'echo Running tests...'
             }
         }
-    }
-    
-        stage('Deploy to Azure') {
+
+        stage('Deploy to Azure') {  // Moved inside stages block
             steps {
                 script {
                     def resourceGroup = 'DeploymentWebApp_group'
@@ -50,3 +49,4 @@ pipeline {
         }
     }
 }
+
