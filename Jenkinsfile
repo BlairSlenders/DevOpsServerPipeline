@@ -19,8 +19,21 @@ pipeline {
                 sh 'echo Running tests...'
             }
         }
+        
+        stage('Prepare Deployment Package') {
+            steps {
+                script {
+                    sh '''
+                        echo Creating target directory...
+                        mkdir -p target
+                        echo Zipping project contents...
+                        zip -r target/deployable.zip . -x "target/*"
+                    '''
+                }
+            }
+        }
 
-        stage('Deploy to Azure') {  // Moved inside stages block
+        stage('Deploy to Azure') {
             steps {
                 script {
                     def resourceGroup = 'DeploymentWebApp_group'
@@ -33,7 +46,7 @@ pipeline {
                     az webapp deployment source config-zip \
                       --resource-group ${resourceGroup} \
                       --name ${webAppName} \
-                      --src-path target/deployable.zip
+                      --src target/deployable.zip
                     """
                 }
             }
